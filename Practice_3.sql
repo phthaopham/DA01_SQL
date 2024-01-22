@@ -20,10 +20,22 @@ ROUND(avg(stars),2) as avg_starts
 FROM reviews
 GROUP BY mth, product_id
 ORDER BY mth, product_id
+-- Ex 5
+SELECT sender_id, 
+COUNT (message_id) AS message_count FROM messages
+WHERE EXTRACT (month from sent_date) = 8
+and EXTRACT (year from sent_date) = 2022
+GROUP BY (sender_id)
+ORDER BY (message_count)
+LIMIT 2
 -- Ex6
 SELECT tweet_id from Tweets
 WHERE LENGTH (content) >15
 -- Ex 7
+SELECT activity_date AS day, COUNT(DISTINCT user_id) AS active_users
+FROM Activity
+WHERE activity_date BETWEEN '2019-06-28' and '2019-07-27'
+GROUP BY activity_date; 
 -- Ex 8
 select count (id) AS number_employee from employees
 where extract (month from joining_date) between 1 and 7
@@ -33,3 +45,5 @@ select position ('a' in first_name) as position
 from worker
 where first_name =  'Amitah'
 -- Ex 10 
+select substring(title,LENGTH(winery)+2,4)
+from winemag_p2;
