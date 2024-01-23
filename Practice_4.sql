@@ -11,9 +11,12 @@ ELSE 'No'
 END AS triangle
 FROM Triangle
 -- Ex 3
-
+SELECT 
+ROUND (CAST(COUNT (CASE WHEN call_category = 'n/a' or call_category = ' ' then 1 end )
+/COUNT (*)*100.0 AS DECIMAL),1) AS call_percentage 
+FROM callers;
 -- Ex 4
-select name
-from customer
-where referee_id !=2 or referee_id is NULL;
+SELECT name
+FROM customer
+WHERE referee_id !=2 or referee_id is NULL;
 -- Ex 5
