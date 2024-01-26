@@ -1,3 +1,12 @@
+-- Ex 1
+
+-- Ex 2
+SELECT ROUND(CAST(COUNT(b.email_id)) AS DECIMAL) / COUNT(DISTINCT a.email_id),2) AS activation_rate
+FROM emails AS a 
+LEFT JOIN texts AS b 
+ON a.email_id = b.email_id
+AND b.signup_action = 'Confirmed';
+-- Ex 3
 
 -- Ex 5
 SELECT b.employee_id, b.name, COUNT(a.employee_id) AS reports_count, ROUND(AVG(a.age)) AS average_age
