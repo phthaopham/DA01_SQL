@@ -1,5 +1,8 @@
 -- Ex 1
-
+SELECT b.continent, FLOOR(AVG(a.population)) FROM city as a
+JOIN country as b
+ON a.countrycode=b.code
+GROUP BY b.continent
 -- Ex 2
 SELECT ROUND(CAST(COUNT(b.email_id)) AS DECIMAL) / COUNT(DISTINCT a.email_id),2) AS activation_rate
 FROM emails AS a 
@@ -7,7 +10,16 @@ LEFT JOIN texts AS b
 ON a.email_id = b.email_id
 AND b.signup_action = 'Confirmed';
 -- Ex 3
-
+SELECT age.age_bucket, 
+ROUND(100.0 * SUM(activities.time_spent) FILTER (WHERE activities.activity_type = 'send')/
+SUM(activities.time_spent),2) AS send_perc, 
+ROUND(100.0 * SUM(activities.time_spent) FILTER (WHERE activities.activity_type = 'open')/
+SUM(activities.time_spent),2) AS open_perc
+FROM activities
+INNER JOIN age_breakdown AS age 
+ON activities.user_id = age.user_id 
+WHERE activities.activity_type IN ('send', 'open') 
+GROUP BY age.age_bucket;
 -- Ex 5
 SELECT b.employee_id, b.name, COUNT(a.employee_id) AS reports_count, ROUND(AVG(a.age)) AS average_age
 FROM employees AS a
