@@ -26,3 +26,39 @@ ON a.category_id=c.category_id
 GROUP BY c.name 
 ORDER BY COUNT(DISTINCT b.title) DESC
 -- Ex 5
+SELECT a.first_name || ' ' || a.last_name as hoten, COUNT(b.film_id) as soluong
+from actor as a
+JOIN film_actor as b
+ON a.actor_id=b.actor_id
+JOIN film as c
+ON b.film_id=c.film_id
+GROUP BY hoten
+ORDER BY soluong DESC
+-- Ex 6
+SELECT COUNT(a.address_id) as soluong
+FROM address as a 
+LEFT JOIN customer AS b 
+ON a.address_id=b.address_id
+WHERE b.customer_id is null
+-- Ex 7
+SELECT d.city, SUM(a.amount) from payment as a
+JOIN customer as b
+ON a.customer_id=b.customer_id
+JOIN address as c
+ON b.address_id=c.address_id
+JOIN city as d
+ON c.city_id=d.city_id
+GROUP BY d.city
+ORDER BY SUM DESC
+-- Ex 8
+SELECT d.city||','||e.country as city_country,SUM(a.amount) from payment as a
+JOIN customer as b
+ON a.customer_id=b.customer_id
+JOIN address as c
+ON b.address_id=c.address_id
+JOIN city as d
+ON c.city_id=d.city_id
+JOIN country as e
+ON d.country_id=e.country_id
+GROUP BY d.city||','|| e.country
+ORDER BY SUM 
