@@ -9,6 +9,13 @@ GROUP BY company_id, title, description)
 SELECT COUNT(DISTINCT company_id) AS duplicate_companies
 FROM job_count
 WHERE job_count > 1
+-- Ex 2
+SELECT category,
+product, 
+SUM(spend) AS total_spend
+FROM product_spend
+WHERE EXTRACT (YEAR FROM transaction_date) = 2022
+GROUP BY category,product
 -- Ex 3
 WITH total_call
 AS (SELECT policy_holder_id, 
