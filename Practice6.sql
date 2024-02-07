@@ -125,6 +125,18 @@ GROUP BY company_id, title, description)
 SELECT COUNT(DISTINCT company_id) AS duplicate_companies
 FROM twt_job_count
 WHERE job_count > 1
+-- Ex 11
+WITH Rating_movie 
+AS ( SELECT a.movie_id, AVG(rating) AS avg_rating
+FROM MovieRating as a
+JOIN Movies as b
+ON a.movie_id=b.movie_id
+WHERE created_at BETWEEN '2020-02-01' AND '2020-02-29'
+GROUP BY movie_id )
+SELECT title FROM Rating_movie
+WHERE avg_rating = (SELECT MAX(avg_rating)
+FROM Rating_movie )
+ORDER BY movie_id
 -- Ex 12
 WITH count_friend 
 AS (SELECT accepter_id AS ban_be, COUNT(requester_id) AS so_luong
