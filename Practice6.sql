@@ -9,13 +9,37 @@ GROUP BY company_id, title, description)
 SELECT COUNT(DISTINCT company_id) AS duplicate_companies
 FROM job_count
 WHERE job_count > 1
--- Ex 2
-SELECT category,
-product, 
-SUM(spend) AS total_spend
+  -- Ex 2
+WITH top_spending_1
+AS (SELECT category,
+product,
+SUM(spend) AS total_spend 
 FROM product_spend
-WHERE EXTRACT (YEAR FROM transaction_date) = 2022
-GROUP BY category,product
+WHERE EXTRACT(YEAR FROM transaction_date) = 2022
+AND category = 'electronics'
+GROUP BY product, category
+ORDER BY total_spend DESC
+LIMIT 2),
+top_spending_2 
+AS (SELECT category,
+product,
+SUM(spend) AS total_spend 
+FROM product_spend
+WHERE EXTRACT(YEAR FROM transaction_date) = 2022
+AND category = 'appliance'
+GROUP BY product,category
+ORDER BY total_spend DESC 
+LIMIT 2)
+SELECT category,
+product,
+total_spend
+FROM top_spending_1 
+UNION 
+SELECT category,
+product,
+total_spend
+FROM top_spending_2
+ORDER BY product,category
 -- Ex 3
 WITH total_call
 AS (SELECT policy_holder_id, 
@@ -31,6 +55,14 @@ FROM pages
 WHERE page_id NOT IN 
 (SELECT page_id FROM page_likes
 WHERE page_id IS NOT NULL)
+-- Ex 5
+SELECT EXTRACT(MONTH FROM event_date) AS month,
+COUNT(DISTINCT user_id) AS monthly_active_users
+FROM user_actions
+WHERE event_date BETWEEN '2022-07-01' AND '2022-07-31'
+AND user_id IN ( SELECT DISTINCT user_id FROM user_actions
+WHERE event_date BETWEEN '2022-06-01' AND '2022-06-30')
+GROUP BY EXTRACT(MONTH FROM event_date);
 -- Ex 6
 WITH monthly_trans
 AS (SELECT DATE_FORMAT(trans_date, '%Y-%m') AS month,
